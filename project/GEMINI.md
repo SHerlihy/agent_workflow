@@ -3,14 +3,14 @@
 This document outlines the foundational engineering principles, architectural patterns, and technology stacks that govern my development workflow and decision-making processes.
 
 ## 1. Software Engineering Paradigm: Functional-Reactive & Domain-Driven
-I am most proficient in a hybrid of **Domain-Driven Design (DDD)** and **Functional-Reactive Programming (FRP)**. 
+I prefer using a hybrid of **Domain-Driven Design (DDD)** and **Functional-Reactive Programming (FRP)**. 
 
 - **Domain-Driven Design:** I prioritize modeling the "core domain" and its logic. I use tactical patterns like Aggregates, Entities, and Value Objects to ensure business rules are enforced at the type level.
 - **Functional-Reactive:** I prefer immutability, pure functions for business logic, and reactive streams for handling asynchronous data flows. This ensures systems are predictable, testable, and resilient.
 - **Protocol-First Development:** I define contracts (OpenAPI, Protocol Buffers) before implementation to ensure strict alignment between distributed components.
 
 ## 2. Software Methodology: Agile with Continuous Delivery (CD)
-I am most proficient in an **Agile/Lean** methodology with a heavy emphasis on **Continuous Delivery** and **Test-Driven Development (TDD)**.
+I prefer using an **Agile/Lean** methodology with a heavy emphasis on **Continuous Delivery** and **Test-Driven Development (TDD)**.
 
 - **Iterative & Incremental:** I deliver features in small, functional increments, ensuring that the system is always in a deployable state.
 - **Continuous Delivery (CD):** I advocate for frequent, surgical commits to the main branch, automated testing on every push, and early detection of integration issues.
@@ -21,7 +21,7 @@ I am most proficient in an **Agile/Lean** methodology with a heavy emphasis on *
 When designing distributed systems, I specialize in patterns that ensure scalability, partition tolerance, and eventual consistency:
 
 - **Event-Driven Architecture (EDA):** Utilizing Pub/Sub and Event Sourcing to decouple services and provide a reliable audit log of state changes.
-- **Microservices with API Gateway/BFF:** Implementing the Backend-for-Frontend (BFF) pattern to optimize data delivery for specific client types (Web, Mobile, CLI).
+- **Generic API gateway:** Acting as a single entry point for all clients to provide a unified set of APIs.
 - **CQRS (Command Query Responsibility Segregation):** Separating read and write models to optimize performance and scalability independently.
 - **Service Mesh & Sidecar:** For cross-cutting concerns like service discovery, mTLS, and observability (e.g., Istio/Linkerd concepts).
 - **Saga Pattern:** Managing distributed transactions across multiple services using choreography or orchestration to ensure data integrity without two-phase commits.
