@@ -4,25 +4,45 @@
 Accepted
 
 ## Context
-Accessibility is a core functional requirement, not just a "nice to have". The marketplace must be usable by all users, including those using screen readers or keyboard-only navigation.
+Accessibility is a core functional requirement. The marketplace must be usable by all users, including those using screen readers or keyboard-only navigation. We aim for a "Level AA+" standard, intentionally exceeding base requirements in key areas to ensure maximum inclusivity.
 
 ## Decision
-We will adhere to **WCAG 2.1 Level AA** standards using the following toolkit:
-1. **Semantic HTML:** Strict enforcement of semantic tags over generic `<div>`s.
-2. **ARIA & Headless UI:** Use `react-aria` or `@radix-ui` for complex components (modals, dropdowns) to ensure correct keyboard behavior and screen reader support out of the box.
-3. **Contrast & Typography:** Use CSS variables for colors that are pre-validated for a 4.5:1 (AA) ratio. Ensure font sizes are relative (`rem`) to support browser zooming.
-4. **Focus Management:** Implement a consistent, high-visibility "Focus Ring" for all interactive elements. Use "Focus Traps" correctly in modals.
-5. **Alt-Text:** Require alt-text for all decorative and informative images via ESLint.
+The application will adhere to **WCAG 2.1 Level AA** as a baseline, with specific **Level AAA** enhancements.
+
+### Key Requirements (AA+ Ambition)
+- **Enhanced Contrast (AAA):** Text contrast ratio must be at least **7:1** (exceeding the 4.5:1 AA standard).
+- **Lower Reading Level (AAA):** Content must be understandable by someone with a lower secondary education level.
+- **Alt Text:** Non-text content (images) must have text alternatives.
+- **Keyboard Accessible:** Everything must be usable via keyboard (no "keyboard traps").
+- **Meaningful Sequence:** Content must be presented in a logical reading order.
+- **No Flashing:** Nothing flashes more than three times per second.
+- **Resizing Text:** Users must be able to zoom text up to 200% without loss of functionality.
+- **Navigation:** Consistent menus and multiple ways to find pages (search + sitemap).
+- **Headings & Labels:** Clear, descriptive headings and labels for all forms and pages.
+- **Focus Visible:** Visually obvious focus rings for all interactive elements.
+- **No Background Audio:** Audio must not play automatically.
+- **Context-Sensitive Help:** Providing help for complex interactions.
+
+*Note: As the application does not include video content, captioning requirements are currently out of scope.*
 
 ## Consequences
-- **Positive:** Legal compliance, improved SEO, and a better experience for users with temporary or permanent impairments.
-- **Negative:** Increases development time for complex custom components.
-- **Neutral:** Requires specific training and tools for the development team.
+- **Positive:** Superior inclusivity, exceptional SEO, and robust legal compliance.
+- **Negative:** Stricter design constraints due to high contrast requirements (7:1).
+- **Neutral:** Strict reliance on automated verification limits the detection of purely experiential accessibility issues.
 
 ## Compliance
-- **Dev:** `eslint-plugin-jsx-a11y` and Storybook A11y addon.
-- **CI:** `axe-core` integration in Playwright E2E tests.
-- **Manual:** Monthly manual audit using screen readers (VoiceOver/NVDA) and keyboard-only navigation tests.
+
+### Dev (Automation)
+- **ESLint:** Use `eslint-plugin-jsx-a11y` to catch errors (alt text, ARIA roles, labels) in real-time.
+- **Storybook:** Use the A11y Addon to audit components during the building block phase.
+
+### CI (Targeted Automation)
+- **Pa11y:** Automated scans of the sitemap/URLs to catch regression errors.
+- **axe-playwright:** Accessibility audits are **mandated for critical path E2E tests** (e.g., Asset Search, Checkout Flow, User Dashboard) to ensure zero blockers on high-value transactions.
+- **Contrast Checking:** Automated validation of CSS variables against the 7:1 ratio.
+
+### Manual
+- **Not Mandated:** Compliance relies strictly on the automated suite defined above to maintain developer velocity and objective verification.
 
 ## References
 - [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
