@@ -9,20 +9,20 @@ The application handles sensitive data, including Personally Identifiable Inform
 ## Decision
 We will implement the following security layers:
 
-1.  **Content Security Policy (CSP):** Implement a strict CSP via HTTP headers to prevent unauthorized script execution and data injection. We will use a "nonce-based" or "hash-based" approach for inline scripts and restrict `script-src` to trusted domains.
+1.  **Content Security Policy (CSP):** Implement a strict CSP via HTTP headers to prevent unauthorized script execution and data injection. We will use a "nonce-based" or "hash-based" approach for inline scripts and restrict `script-src` and `connect-src` to trusted domains, specifically whitelisting **Clerk** (Authentication) and **Paddle** (Payments).
 2.  **XSS Protection:**
     *   Rely on framework-level auto-encoding (React/TypeScript).
     *   Explicitly prohibit `dangerouslySetInnerHTML` via ESLint rules.
-    *   Use `DOMPurify` for any mandatory rendering of user-provided HTML.
+    *   **Prohibit User-Provided HTML:** The application will not accept or render user-provided HTML, eliminating the need for complex client-side sanitization. All user input will be treated as plain text.
 3.  **Secure Session Management:**
     *   Store session tokens in `HttpOnly`, `Secure`, and `SameSite=Strict` cookies.
-    *   Avoid storing sensitive data or JWTs in `localStorage` or `sessionStorage`.
+    *   Avoid storing sensitive data or JWTs in `localStorage` or `sessionStorage`. **Non-sensitive application state** (e.g., UI themes, non-sensitive metadata caches) is permitted in local storage as it does not pose an authentication risk.
 4.  **Dependency & Supply Chain Security:**
     *   Enable automated vulnerability scanning (GitHub Dependabot).
     *   Enforce `npm audit` checks in the CI/CD pipeline, failing builds on 'High' or 'Critical' vulnerabilities.
     *   Use Subresource Integrity (SRI) for any scripts loaded from external CDNs.
 5.  **Transport & Framing:**
-    *   Enforce HSTS (HTTP Strict Transport Security) to ensure all traffic is encrypted.
+    *   Enforce **HSTS with Preloading:** Implement HTTP Strict Transport Security with the `preload` directive to ensure the domain is hardcoded as HTTPS-only in modern browsers.
     *   Set `X-Frame-Options: DENY` or use CSP `frame-ancestors 'none'` to prevent Clickjacking.
 
 ## Consequences
